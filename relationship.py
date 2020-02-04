@@ -1,3 +1,5 @@
+import numpy as np
+
 class AOI():
     def __init__(self, S, Ex, Ef, V):
         self.S = S
@@ -7,8 +9,9 @@ class AOI():
         self.t = 0
     
     def fixate():
-        #TODO: Return a random sample from log normal dist mu=0, sigma=.5
-        return
+        #Return a random sample from log normal dist mu=0, sigma=.5
+        return np.random.lognormal(0,.5)
+        
         
         
 class Observer():
@@ -17,8 +20,8 @@ class Observer():
          self.nextAOI = None
          
     def move(currentAOI, nextAOI):
-        #TODO: Return a random sample from normal dist mu=.03, sigma=.003
-        return
+        #Return a random sample from normal dist mu=.03, sigma=.003
+        return np.random.normal(.03,.003)
         
         
 A_Ef = {'B':1, 'C':1, 'D':5}
