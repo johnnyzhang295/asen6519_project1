@@ -1,5 +1,7 @@
 import numpy as np
 import string
+import matplotlib.pyplot as plt
+matplotlib.rcParams['interactive'] == True
 
 class AOI():
     def __init__(self, ID, S, Ex, Ef, V):
@@ -20,10 +22,13 @@ class Observer():
     def __init__(self):
          self.currentAOI = None
          self.nextAOI = None
+         self.betweenTime = 0
          
-    def eye_movement_time(currentAOI, nextAOI):
+    def eye_movement_time():
         #Return a random sample from normal dist mu=.03, sigma=.003
-        return np.random.normal(.03,.003)
+        time = np.random.normal(.03,.003)
+        self.betweenTime += time
+        return time
                 
 def p_abs(currentAOI, nextAOI):
     return nextAOI.S - nextAOI.Ef[currentAOI.ID] + nextAOI.Ex + nextAOI.V
@@ -49,3 +54,24 @@ AOI_C = AOI('C',1,3,C_Ef,1)
 AOI_D = AOI('D',2,1,D_Ef,5)
 
 AOI_list = [AOI_A, AOI_B, AOI_C, AOI_D]
+
+iterations = 10
+mark_watney = Observer()
+
+
+time = AOI_A.view_AOI_time()
+current = AOI_A
+for i in range(0,iterations):
+    #global current
+    time += mark_watney.eye_movement_time()
+    nextAOI_index = np.argmax([p(current, AOI_A, AOI_list),
+                    p(current, AOI_B, AOI_list),
+                    p(current, AOI_C, AOI_list),
+                    p(current, AOI_D, AOI_list)])
+
+    current = AOI_list[nextAOI_index]
+    time += current.view_AOI_time()
+
+data = [AOI_A.time, AOI_B.time, AOI_C.time, AOI_D.time, mark_watney.betweenTime]
+plt.hist(data, 1)
+plt.show()
